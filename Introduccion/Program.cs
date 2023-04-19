@@ -73,6 +73,7 @@ class AsignaturaValidator : AbstractValidator<Asignatura>
     public AsignaturaValidator()
     {
         RuleForEach(a => a.Examenes).SetValidator(new ExamenValidator());
+        RuleForEach(a => a.Examenes).SetValidator(new ExamenValidator());
     }
 }
 
