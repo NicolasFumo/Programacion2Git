@@ -28,6 +28,8 @@ namespace MVC
             InitializeComponent();
 
             controladorPersona = new PersonaController();
+
+            ActualizarDataGrid();
         }
 
         private void GuardarPersona(object sender, RoutedEventArgs e)
@@ -36,7 +38,23 @@ namespace MVC
 
             p.Nombre = txtNombre.Text;
 
-            controladorPersona.RegistrarPersona(p);
+            var res = controladorPersona.RegistrarPersona(p);
+
+            if (res.HayError)
+            {
+                MessageBox.Show(res.MensajeError);
+            }
+            else
+            {
+                MessageBox.Show(res.Respuesta.Nombre);
+                ActualizarDataGrid();
+            }            
+        }
+
+        private void ActualizarDataGrid()
+        {
+            dtgPersonas.ItemsSource = null;
+            dtgPersonas.ItemsSource = controladorPersona.ObtenerTodos();
         }
     }
 }

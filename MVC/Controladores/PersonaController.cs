@@ -1,4 +1,6 @@
-﻿using MVC.Modelos;
+﻿using MVC.DTOs;
+using MVC.Modelos;
+using MVC.Validaciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +18,21 @@ namespace MVC.Controladores
             Repositorio = new Repositorio();
         }
 
-        public void RegistrarPersona(Persona p)
+        public GestorRespuesta<Persona> RegistrarPersona(Persona p)
         {
-            Repositorio.Personas.Add(p);
+            var validacionPersona = new PersonaValidator();
+            var resultadoValidacion = validacionPersona.Validate(p);
+
+            if (resultadoValidacion.IsValid)
+            {
+                Repositorio.Personas.Add(p);
+
+                return new GestorRespuesta<Persona>(p);
+            }
+            else
+            {
+                return new GestorRespuesta<Persona>(true, resultadoValidacion.ToString());
+            }
         }
 
         public List<Persona> ObtenerTodos()
