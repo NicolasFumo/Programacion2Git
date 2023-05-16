@@ -18,6 +18,30 @@ namespace MVC.Controladores
             Repositorio = new Repositorio();
         }
 
+        public List<Persona> ObtenerPorCoincidencia(string nombre)
+        {
+            var busqueda = Repositorio.Personas.Where(p => p.Nombre.Contains(nombre)).ToList();
+
+            return busqueda;
+        }
+
+        public Persona Actualizar (Persona p)
+        {
+            var personaEliminar = Repositorio.Personas.Where(x => x.Nombre == p.Nombre)
+                                                        .First();
+            Repositorio.Personas.Remove(personaEliminar);
+            Repositorio.Personas.Add(p);
+
+            return p;
+        }
+
+        public bool Eliminar(Persona p)
+        {
+            Repositorio.Personas.Remove(p);
+
+            return true;
+        }
+
         public GestorRespuesta<Persona> RegistrarPersona(Persona p)
         {
             var validacionPersona = new PersonaValidator();
